@@ -69,7 +69,7 @@ class TensorPartContainer:
         for tensor, info in zip(self.local_tensors, self.tensor_infos):
             bytes_per_value = tensor.element_size() * compression.estimate_compression_ratio(info)
             part_size_values = int(part_size_bytes / bytes_per_value)
-            tensor_parts = tensor.detach().view(-1).split(part_size_values)
+            tensor_parts = tensor.detach().reshape(-1).split(part_size_values)
             self.num_parts_by_tensor.append(len(tensor_parts))
             for part_index, part in enumerate(tensor_parts):
                 part_info = info.get_part(part_index, part_size_values)
